@@ -1,14 +1,15 @@
 
 import json
-import re
 import logging
+import re
 
-logger = logging.getLogger(__name__)
+import httpx
 
 from app.llm import generate_response
 from app.rag import search_knowledge
 from app.tools.web_search import search_web
 
+logger = logging.getLogger(__name__)
 
 KNOWLEDGE_PROMPT = """
 You are Getnet's Knowledge Agent.
@@ -94,7 +95,7 @@ def handle_knowledge(message: str) -> dict:
                 ),
                 "sources": [],
                 "status": "insufficient_information",
-            }
+                }
 
             evidence = [
                 {
@@ -137,13 +138,43 @@ def handle_knowledge(message: str) -> dict:
         indent=2,
     )
 
-    answer = generate_response(
-        system_prompt=KNOWLEDGE_PROMPT,
-        user_message=(
-            f"Question:\n{message}\n\n"
-            f"Evidence:\n{context}"
-        ),
-    )
+
+    try:
+        answer = generate_response(
+            system_prompt=KNOWLEDGE_PROMPT,
+            user_message=(
+                f"Question:\n{message}\n\n"
+                f"Evidence:\n{context}"
+            ),
+        )
+
+    except httpx.TimeoutException:
+        logger.exception(
+            "Knowledge Agent: Ollama request timed out"
+        )
+        return {
+            "answer": (
+                "El modelo de inteligencia artificial "
+                "tardó demasiado en responder. "
+                "Por favor, intenta nuevamente."
+            ),
+            "sources": [],
+            "status": "error",
+        }
+
+    except (httpx.HTTPError, ValueError, KeyError):
+        logger.exception(
+            "Knowledge Agent: response generation failed"
+        )
+        return {
+            "answer": (
+                "No fue posible generar una respuesta "
+                "en este momento."
+            ),
+            "sources": [],
+            "status": "error",
+        }
+
 
     sources = list(dict.fromkeys(
         item["source"] for item in evidence

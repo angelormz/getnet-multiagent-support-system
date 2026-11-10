@@ -78,3 +78,46 @@ def test_web_search_provider_failure(monkeypatch):
     )
 
     assert result == []
+
+
+
+def test_knowledge_llm_timeout(monkeypatch):
+    import httpx
+
+    # 1. Simulamos documentos recuperados del RAG.
+    def fake_search(question, top_k=3):
+        return [
+            {
+                "text": "Getnet Portal is a sales management tool.",
+                "source": "https://www.getnet.net/mx/",
+                "country": "MX",
+                "distance": 0.1,
+            }
+        ]
+
+    # 2. Simulamos que Ollama tarda demasiado.
+    def fake_llm(*args, **kwargs):
+        raise httpx.ReadTimeout(
+            "Simulated Ollama timeout"
+        )
+
+    # 3. Sustituimos temporalmente las funciones reales.
+    monkeypatch.setattr(
+        "app.agents.knowledge.search_knowledge",
+        fake_search,
+    )
+
+    monkeypatch.setattr(
+        "app.agents.knowledge.generate_response",
+        fake_llm,
+    )
+
+    # 4. Ejecutamos el Knowledge Agent.
+    result = handle_knowledge(
+        "What is Getnet Portal?"
+    )
+
+    # 5. Verificamos el comportamiento esperado.
+    assert result["status"] == "error"
+    assert result["sources"] == []
+    assert "tardó demasiado" in result["answer"]

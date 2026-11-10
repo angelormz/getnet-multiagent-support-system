@@ -1,21 +1,21 @@
-Getnet Multi-Agent Support System
+# Getnet Multi-Agent Support System
 
-1. Objective
+## 1. Objective
 Build a multi-agent customer support system using Python, FastAPI, Ollama, and Retrieval-Augmented Generation (RAG).
 
 Development methodology: Spec-Driven Development (SDD).
 
 The system routes customer requests to specialized agents, retrieves information from official Getnet Mexico sources, performs real web searches, queries simulated customer records, and creates simulated escalation tickets.
 
-2. Functional Requirements
-FR-001: Router Agent
+## 2. Functional Requirements
+### FR-001: Router Agent
 - Analyze incoming user messages using Qwen3.
 - Classify requests as knowledge, support, or both.
 - Validate structured routing decisions using Pydantic.
 - Route requests to the appropriate specialized agents.
 - Support combined requests requiring multiple agents.
 - Provide a fallback route when classification fails.
-FR-002: Knowledge Agent
+### FR-002: Knowledge Agent
 - Retrieve Getnet product information using RAG.
 - Ingest publicly accessible documentation from the official Getnet Mexico website.
 - Generate local embeddings using nomic-embed-text.
@@ -24,7 +24,7 @@ FR-002: Knowledge Agent
 - Return source URLs alongside generated answers.
 - Avoid unsupported claims and treat retrieved content as untrusted evidence.
 - Handle unavailable or insufficient information gracefully.
-FR-003: Customer Support Agent
+### FR-003: Customer Support Agent
 - Retrieve simulated customer information using Python tools.
 - Implement get_customer(user_id) and get_transactions(user_id).
 - Store mock customer and transaction records in JSON files.
@@ -32,21 +32,21 @@ FR-003: Customer Support Agent
 - Generate responses based on retrieved customer records.
 - Return appropriate responses for unknown customers.
 Security limitation: The MVP does not implement user authentication or authorization. The supplied user_id determines which simulated records are retrieved and must not be treated as verified identity.
-FR-004: Escalation Agent
+### FR-004: Escalation Agent
 - Detect requests requiring human assistance using predefined rules.
 - Identify explicit human-support requests and selected sensitive scenarios.
 - Create simulated escalation tickets in SQLite.
 - Return a simulated ticket reference.
 - Return the pending_human_review status.
 - Clearly distinguish simulated escalation from actual human notification.
-FR-005: Response Quality and Personality
+### FR-005: Response Quality and Personality
 - Produce clear, professional, and consistent responses.
 - Respond in Spanish or English according to the user's language.
 - Preserve retrieved facts and relevant source references.
 - Avoid fabricating transaction details, deposit dates, fees, or Getnet policies.
 - Return a defined status when information cannot be retrieved.
 
-3. System Architecture
+## 3. System Architecture
 The application consists of:
 - FastAPI: HTTP API and request validation.
 - Escalation Agent: Rule-based escalation detection and ticket creation.
@@ -66,7 +66,8 @@ Request Processing
 6. Execute the Knowledge Agent, Support Agent, or both.
 7. Combine results when multiple agents are required.
 8. Return a structured JSON response.
-4. API Contract
+
+## 4. API Contract
 
 POST /chat
 Request
@@ -90,7 +91,7 @@ Supported status values
 GET /health
 Returns the application's basic health status.
 
-5. Technical Requirements
+## 5. Technical Requirements
 - Python 3.12
 - FastAPI and Pydantic
 - Ollama with qwen3:4b
@@ -102,7 +103,7 @@ Returns the application's basic health status.
 - pytest automated testing
 - Environment-based configuration
 
-6. Data Sources
+## 6. Data Sources
 Official Getnet Mexico documentation
 The initial RAG knowledge base includes:
 - Getnet payment terminal with printer
@@ -112,7 +113,7 @@ Simulated customer information
 - data/customers.json
 - data/transactions.json
 
-7. Acceptance Criteria
+## 7. Acceptance Criteria
 - Router classifies requests into the supported routes.
 - Knowledge Agent retrieves official Getnet Mexico documents.
 - General questions can trigger real external web searches.
@@ -124,12 +125,12 @@ Simulated customer information
 - Errors and unavailable sources are handled without fabricating answers.
 - Docker execution and automated tests are documented.
 
-8. Validation
+## 8. Validation
 The MVP has passed 21 automated pytest tests, covering API behavior, routing, simulated customer data, knowledge classification, escalation behavior, and selected error scenarios.
 
 These automated tests do not establish production readiness or guarantee the accuracy of all LLM-generated responses.
 
-9. Known Limitations
+## 9. Known Limitations
 - No production authentication or authorization.
 - No connection to real Getnet customer accounts or transaction systems.
 - Escalation tickets do not notify actual human operators.
@@ -138,7 +139,7 @@ These automated tests do not establish production readiness or guarantee the acc
 - LLM responses may still require factual verification.
 - Local Ollama inference requires sufficient computing resources.
 
-10. Future Improvements
+## 10. Future Improvements
 - Implement authentication and authorization.
 - Expand official Getnet Mexico knowledge coverage.
 - Add retrieval relevance thresholds and citation verification.

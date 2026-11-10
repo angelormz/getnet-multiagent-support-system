@@ -100,7 +100,7 @@ README.md
 ### 1. Clone and install
 
 ```bash
-git clone <YOUR_REPOSITORY_URL>
+git clone https://github.com/angelormz/getnet-multiagent-support-system.git
 cd getnet-multiagent-support-system
 python3.12 -m venv .venv
 source .venv/bin/activate
@@ -210,7 +210,7 @@ Try these additional requests in Swagger:
 | --- | --- | --- |
 | Customer support | `What is the status of transaction TX001?` | `cliente001` |
 | Combined | `What is the status of TX001 and what is Getnet Portal?` | `cliente001` |
-| General web search | `What is GETNET?` | `cliente001` |
+| General web search | `What is quantum computing?` | `cliente001` |
 | Escalation | `I want to speak with a human agent.` | `cliente001` |
 
 The response field `status` can be `success`, `insufficient_information`, `pending_human_review`, or `error`. Escalation creates a **local simulated ticket**; it does not contact a human operator.

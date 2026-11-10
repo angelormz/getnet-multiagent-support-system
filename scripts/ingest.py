@@ -1,3 +1,4 @@
+import os
 import re
 import sys
 from pathlib import Path
@@ -11,8 +12,15 @@ from bs4 import BeautifulSoup
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DB_DIR = ROOT_DIR / "chroma_db"
 
-OLLAMA_URL = "http://127.0.0.1:11434"
-EMBEDDING_MODEL = "nomic-embed-text"
+OLLAMA_URL = os.getenv(
+    "OLLAMA_URL",
+    "http://127.0.0.1:11434",
+)
+
+EMBEDDING_MODEL = os.getenv(
+    "EMBEDDING_MODEL",
+    "nomic-embed-text",
+)
 
 SOURCES = [
     {
