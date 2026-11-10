@@ -1,0 +1,12 @@
+{
+  "cliente001": {
+    "name": "Comercio Demo",
+    "account_status": "active",
+    "country": "MX"
+  },
+  "cliente002": {
+    "name": "Tienda Ejemplo",
+    "account_status": "active",
+    "country": "MX"
+  }
+}

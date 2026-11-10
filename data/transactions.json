@@ -1,0 +1,31 @@
+
+{
+  "cliente001": [
+    {
+      "id": "TX001",
+      "amount": 1250.00,
+      "currency": "MXN",
+      "status": "approved",
+      "deposit_status": "pending",
+      "deposit_date": null
+    },
+    {
+      "id": "TX002",
+      "amount": 850.00,
+      "currency": "MXN",
+      "status": "approved",
+      "deposit_status": "completed",
+      "deposit_date": "2026-11-08"
+    }
+  ],
+  "cliente002": [
+    {
+      "id": "TX003",
+      "amount": 500.00,
+      "currency": "MXN",
+      "status": "declined",
+      "deposit_status": "not_applicable",
+      "deposit_date": null
+    }
+  ]
+}

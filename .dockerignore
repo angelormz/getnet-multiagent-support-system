@@ -1,0 +1,33 @@
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Git
+.git/
+.gitignore
+
+# Environment and secrets
+.env
+.env.*
+
+# Local databases
+data/*.db
+data/*.db-shm
+data/*.db-wal
+*.sqlite3
+
+# Development tools
+.pytest_cache/
+.ruff_cache/
+.coverage
+.vscode/
+
+# Documentation and tests
+tests/
+README.md
+SPEC.md
+
+# Operating system
+.DS_Store
